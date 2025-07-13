@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clean Finance Nav</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9fafb;
+    }
+
+    header {
+      background: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+      position: relative;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown > a {
+      text-decoration: none;
+      color: #374151;
+      font-weight: 500;
+      padding: 10px;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      padding: 15px 20px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      display: block;
+      text-decoration: none;
+      color: #4b5563;
+      padding: 4px 0;
+      font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">CalcBed.com</div>
+    <nav>
+      <div class="dropdown">
+        <a href="#">Foundations</a>
+        <div class="dropdown-content">
+          <a href="#">Income</a>
+          <a href="#">Budgeting</a>
+          <a href="#">Saving</a>
+          <a href="#">Spending & Lifestyle</a>
+          <a href="#">Emergency Funds</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#">Credit & Debt</a>
+        <div class="dropdown-content">
+          <a href="#">Debt</a>
+          <a href="#">Credit & Credit Cards</a>
+          <a href="#">Student Loans</a>
+          <a href="#">Mortgages & Housing</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#">Banking & Protection</a>
+        <div class="dropdown-content">
+          <a href="#">Banking</a>
+          <a href="#">Insurance</a>
+          <a href="#">Legal & Financial Documents</a>
+          <a href="#">Estate Planning & Wills</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#">Building Wealth</a>
+        <div class="dropdown-content">
+          <a href="#">Investing</a>
+          <a href="#">Retirement Planning</a>
+          <a href="#">Real Estate Investing</a>
+          <a href="#">Crypto & Alt Investments</a>
+          <a href="#">Side Hustles & Passive Income</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#">Life & Family</a>
+        <div class="dropdown-content">
+          <a href="#">Children & Family Finances</a>
+          <a href="#">Education & Student Loans</a>
+          <a href="#">Major Life Events</a>
+          <a href="#">Charitable Giving</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#">Strategy & Support</a>
+        <div class="dropdown-content">
+          <a href="#">Financial Goals & Planning</a>
+          <a href="#">Taxes</a>
+          <a href="#">Money Mindset & Habits</a>
+          <a href="#">Financial Tools & Apps</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+</body>
+</html>
