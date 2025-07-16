@@ -2,151 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calc Bed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CalcBed.com</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9fafb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: #111;
     }
-
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
     header {
-      background: white;
-      padding: 20px 40px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #e5e7eb;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 50px;
+      border-bottom: 1px solid #ccc;
+      user-select: none;
     }
-
     .logo {
-      font-weight: bold;
-      font-size: 20px;
+      font-weight: 600;
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
     }
-
     nav {
+      position: relative;
+    }
+    ul.menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
       gap: 30px;
-      position: relative;
-    }
-
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown > a {
-      text-decoration: none;
-      color: #374151;
       font-weight: 500;
-      padding: 10px;
-      display: inline-block;
+      font-size: 1rem;
     }
-
-    .dropdown-content {
-      display: none;
+    ul.menu > li {
+      position: relative;
+    }
+    /* Make Finance itself a link */
+    ul.menu > li.finance > a {
+      cursor: pointer;
+      display: inline-block;
+      padding: 14px 0; /* vertically center */
+    }
+    ul.submenu {
       position: absolute;
-      top: 100%;
+      top: 50px;
       left: 0;
       background: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      padding: 15px 20px;
-      border-radius: 6px;
-      white-space: nowrap;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-width: 140px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 0;
+      margin: 0;
+      display: none;
+      z-index: 10;
     }
-
-    .dropdown:hover .dropdown-content {
+    ul.submenu li {
+      list-style: none;
+    }
+    ul.submenu li a {
       display: block;
+      padding: 10px 16px;
+      color: #111;
     }
-
-    .dropdown-content a {
+    ul.submenu li a:hover {
+      background-color: #f5f5f7;
+      color: #0071e3;
+    }
+    /* Show submenu when hovering finance or submenu */
+    ul.menu > li.finance:hover ul.submenu,
+    ul.menu > li.finance ul.submenu:hover {
       display: block;
-      text-decoration: none;
-      color: #4b5563;
-      padding: 4px 0;
-      font-size: 14px;
-    }
-
-    .dropdown-content a:hover {
-      color: #2563eb;
     }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">CalcBed.com</div>
     <nav>
-      <div class="dropdown">
-        <a href="#">Foundations</a>
-        <div class="dropdown-content">
-          <a href="#">Income</a>
-          <a href="#">Budgeting</a>
-          <a href="#">Saving</a>
-          <a href="#">Spending & Lifestyle</a>
-          <a href="#">Emergency Funds</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <a href="#">Credit & Debt</a>
-        <div class="dropdown-content">
-          <a href="#">Debt</a>
-          <a href="#">Credit & Credit Cards</a>
-          <a href="#">Student Loans</a>
-          <a href="#">Mortgages & Housing</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <a href="#">Banking & Protection</a>
-        <div class="dropdown-content">
-          <a href="#">Banking</a>
-          <a href="#">Insurance</a>
-          <a href="#">Legal & Financial Documents</a>
-          <a href="#">Estate Planning & Wills</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <a href="#">Building Wealth</a>
-        <div class="dropdown-content">
-          <a href="#">Investing</a>
-          <a href="#">Retirement Planning</a>
-          <a href="#">Real Estate Investing</a>
-          <a href="#">Crypto & Alt Investments</a>
-          <a href="#">Side Hustles & Passive Income</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <a href="#">Life & Family</a>
-        <div class="dropdown-content">
-          <a href="#">Children & Family Finances</a>
-          <a href="#">Education & Student Loans</a>
-          <a href="#">Major Life Events</a>
-          <a href="#">Charitable Giving</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <a href="#">Strategy & Support</a>
-        <div class="dropdown-content">
-          <a href="#">Financial Goals & Planning</a>
-          <a href="#">Taxes</a>
-          <a href="#">Money Mindset & Habits</a>
-          <a href="#">Financial Tools & Apps</a>
-        </div>
-      </div>          
-      <div class="dropdown">
-        <a href="#">GPB Test</a>
-        <div class="dropdown-content">
-          <a href="#">Test 1</a>
-          <a href="#">Test 2</a>
-          <a href="#">Test 3</a>
-          <a href="#">Test 4</a>      
-        </div>
-      </div>
+      <ul class="menu">
+        <li class="finance">
+          <a href="#">Finance</a>
+          <ul class="submenu">
+            <li><a href="PIR6.html">PIR</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Engineering</a></li>
+        <li><a href="#">DIY</a></li>
+      </ul>
     </nav>
   </header>
-
 </body>
 </html>
