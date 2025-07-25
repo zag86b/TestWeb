@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Compare CAGR Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    #results {
+      margin-top: 2rem;
+      font-weight: bold;
+    }
+    canvas {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 12px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Compare CAGR Calculators</h1>
+  <div class="calculator" id="inputs">
+    <!-- 3 investment cards -->
+    <div class="card" id="inv1">
+      <h3>Investment 1</h3>
+      <label>Currency</label>
+      <select class="currency"><option>£</option><option>$</option><option>€</option></select>
+      <label>Start Value</label><input type="number" class="startValue" />
+      <label>End Value</label><input type="number" class="endValue" />
+      <label>Years</label><input type="number" class="years" />
+      <label>Months</label><input type="number" class="months" />
+    </div>
+    <div class="card" id="inv2">
+      <h3>Investment 2</h3>
+      <label>Currency</label>
+      <select class="currency"><option>£</option><option>$</option><option>€</option></select>
+      <label>Start Value</label><input type="number" class="startValue" />
+      <label>End Value</label><input type="number" class="endValue" />
+      <label>Years</label><input type="number" class="years" />
+      <label>Months</label><input type="number" class="months" />
+    </div>
+    <div class="card" id="inv3">
+      <h3>Investment 3</h3>
+      <label>Currency</label>
+      <select class="currency"><option>£</option><option>$</option><option>€</option></select>
+      <label>Start Value</label><input type="number" class="startValue" />
+      <label>End Value</label><input type="number" class="endValue" />
+      <label>Years</label><input type="number" class="years" />
+      <label>Months</label><input type="number" class="months" />
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="calculateAll()">Compare</button>
+    <button onclick="exportPDF()">Export to PDF</button>
+  </div>
+
+  <div id="results"></div>
+  <canvas id="cagrChart" height="250"></canvas>
+
+  <script>
+    let chartInstance;
+
+    function calculateCAGR(start, end, years) {
+      return Math.pow(end / start, 1 / years) - 1;
+    }
+
+    function formatPercent(val) {
+      return (val * 100).toFixed(2) + '%';
+    }
+
+    function calculateAll() {
+      const cards = document.querySelectorAll('.card');
+      const datasets = [];
+      const results = [];
+      const maxMonths = [];
+
+      cards.forEach((card, index) => {
+        const name = `Investment ${index + 1}`;
+        const currency = card.querySelector('.currency').value;
+        const startValue = parseFloat(card.querySelector('.startValue').value);
+        const endValue = parseFloat(card.querySelector('.endValue').value);
+        const years = parseFloat(card.querySelector('.years').value) || 0;
+        const months = parseFloat(card.querySelector('.months').value) || 0;
+        const totalYears = years + (months / 12);
+
+        if (!startValue || !endValue || totalYears <= 0) return;
+
+        const cagr = calculateCAGR(startValue, endValue, totalYears);
+        const monthlyCAGR = Math.pow(1 + cagr, 1 / 12) - 1;
+        const totalMonths = Math.round(totalYears * 12);
+        maxMonths.push(totalMonths);
+
+        // Generate data points
+        let growth = [], labels = [], value = startValue;
+        for (let i = 0; i <= totalMonths; i++) {
+          growth.push(value);
+          labels.push(`Month ${i}`);
+          value *= (1 + monthlyCAGR);
+        }
+
+        datasets.push({
+          label: `${name} (${currency})`,
+          data: growth,
+          borderColor: ['#2563eb', '#10b981', '#f59e0b'][index],
+          backgroundColor: 'transparent',
+          tension: 0.3
+        });
+
+        results.push(`${name}: ${formatPercent(cagr)} annual | ${formatPercent(monthlyCAGR)} monthly`);
+      });
+
+      // Show Results
+      document.getElementById('results').innerHTML = results.join('<br>');
+
+      // Draw Chart
+      const ctx = document.getElementById('cagrChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array(Math.max(...maxMonths) + 1).fill(0).map((_, i) => `Month ${i}`),
+          datasets
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true }
+          },
+          scales: {
+            y: { title: { display: true, text: 'Value' } },
+            x: { title: { display: true, text: 'Months' } }
+          }
+        }
+      });
+    }
+
+    async function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+
+      const input = document.body;
+
+      const canvas = await html2canvas(input, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('cagr-comparison.pdf');
+    }
+  </script>
+</body>
+</html>
