@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8764257308898767"
       crossorigin="anonymous"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GYTVB75FB1"></script>
@@ -9,7 +10,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-GYTVB75FB1');
+  gtag('config', 'G-GYTVB75FB1');-->
 </script>
 <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -236,18 +237,17 @@
       border: 1px solid #dee2e6;
     }
 
-    #results-output h3 {
-      font-size: 1.1rem; /* Slightly smaller font */
-      color: #333;
-      margin-bottom: 0.4rem; /* Reduced margin */
-    }
-
     #cagrChart {
       margin-top: 1.5rem; /* Reduced margin */
       background-color: #f8f9fa;
       padding: 0.8rem; /* Reduced padding */
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      /* *** MODIFIED FOR BETTER HEIGHT SCALING *** */
+      width: 100%;
+      height: auto; /* Allow height to adjust naturally */
+      max-height: 60vh; /* Set a maximum height relative to viewport height */
+      /* You can adjust '60vh' (e.g., 50vh, 70vh) to find what works best for your layout. */
     }
 
     @media (max-width: 900px) {
@@ -292,9 +292,6 @@
       }
     }
   </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -346,11 +343,153 @@
         });
       });
     });
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <h1><a href="https://www.calcbed.com">CalcBed.com</a></h1>
+      <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="https://www.calcbed.com">Home</a></li>
+        <li class="dropdown">
+          <a href="#">Finance ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="CAGR.html">CAGR</a></li>
+            <li><a href="PIR.html">Personalised Investment Return</a></li>
+            <li><a href="DebtAvalanche.html">Debt Avalanche</a></li>
+            <li><a href="DebtSnowball.html">Debt Snowball</a></li>
+          </ul>
+        </li>
+        </ul>
+    </nav>
+  </header>
 
+  <div class="page-container">
+    <aside class="ad-sidebar">
+      </aside>
+
+    <main class="main-content">
+      <div class="hero">
+        <h2>Compound Annual Growth Rate (CAGR) Calculator</h2>
+        <p>Compare the growth of up to three scenarios over time.</p>
+      </div>
+
+      <hr>
+
+      <h3>Input Your Scenarios:</h3>
+      <p>To get started, enter the **Start Value**, **End Value**, and **Number of Periods** for each scenario below. You can specify periods in **Years** and/or **Months**. Leave any scenario blank if you don't want to include it in the calculation.</p>
+
+      <hr>
+
+      <h3>Scenario 1:</h3>
+      <form>
+        <label for="scenario1-start">Start Value:</label><br>
+        <input type="number" id="scenario1-start" name="scenario1-start" value="1000" min="0" step="0.01"><br><br>
+
+        <label for="scenario1-end">End Value:</label><br>
+        <input type="number" id="scenario1-end" name="scenario1-end" value="2000" min="0" step="0.01"><br><br>
+
+        <label>Number of Periods:</label><br>
+        <div class="period-input-group">
+            <input type="number" id="scenario1-years" name="scenario1-years" value="5" min="0">
+            <label for="scenario1-years" style="display:inline; margin-bottom: 0;">Years</label>
+            <input type="number" id="scenario1-months" name="scenario1-months" value="0" min="0" max="11">
+            <label for="scenario1-months" style="display:inline; margin-bottom: 0;">Months</label>
+        </div>
+      </form>
+
+      <hr>
+
+      <h3>Scenario 2:</h3>
+      <form>
+        <label for="scenario2-start">Start Value:</label><br>
+        <input type="number" id="scenario2-start" name="scenario2-start" value="1200" min="0" step="0.01"><br><br>
+
+        <label for="scenario2-end">End Value:</label><br>
+        <input type="number" id="scenario2-end" name="scenario2-end" value="2500" min="0" step="0.01"><br><br>
+
+        <label>Number of Periods:</label><br>
+        <div class="period-input-group">
+            <input type="number" id="scenario2-years" name="scenario2-years" value="7" min="0">
+            <label for="scenario2-years" style="display:inline; margin-bottom: 0;">Years</label>
+            <input type="number" id="scenario2-months" name="scenario2-months" value="0" min="0" max="11">
+            <label for="scenario2-months" style="display:inline; margin-bottom: 0;">Months</label>
+        </div>
+      </form>
+
+      <hr>
+
+      <h3>Scenario 3:</h3>
+      <form>
+        <label for="scenario3-start">Start Value:</label><br>
+        <input type="number" id="scenario3-start" name="scenario3-start" value="800" min="0" step="0.01"><br><br>
+
+        <label for="scenario3-end">End Value:</label><br>
+        <input type="number" id="scenario3-end" name="scenario3-end" value="1800" min="0" step="0.01"><br><br>
+
+        <label>Number of Periods:</label><br>
+        <div class="period-input-group">
+            <input type="number" id="scenario3-years" name="scenario3-years" value="6" min="0">
+            <label for="scenario3-years" style="display:inline; margin-bottom: 0;">Years</label>
+            <input type="number" id="scenario3-months" name="scenario3-months" value="0" min="0" max="11">
+            <label for="scenario3-months" style="display:inline; margin-bottom: 0;">Months</label>
+        </div>
+        <button type="button" onclick="calculateCAGR()">Calculate CAGR</button>
+      </form>
+
+      <hr>
+
+      <h3>Results:</h3>
+      <p>Once you've entered your values and clicked "Calculate CAGR", your **annualized return** for each scenario will appear below.</p>
+
+      <div id="results-output">
+        </div>
+
+      <hr>
+
+      <h3>Growth Chart:</h3>
+      <p>This chart will visually represent the growth of each scenario over the specified timeframes, allowing for easy comparison.</p>
+
+      <canvas id="cagrChart"></canvas>
+
+      <hr>
+
+      <h3>Download Your Results:</h3>
+      <p>After calculation, you'll have the option to download a PDF report containing your results and the accompanying chart.</p>
+
+      <button type="button" onclick="downloadPDF()" disabled>Download PDF</button>
+
+      <hr>
+
+      <h3>How to use this tool:</h3>
+      <ol>
+        <li>**Enter Your Data**: Fill in the "Start Value," "End Value," and "Number of Periods" for each of the three scenarios you wish to compare.</li>
+        <li>**Specify Periods**: Enter the number of **Years** and/or **Months**. For example, for 18 months, you can enter "1" year and "6" months, or "0" years and "18" months.</li>
+        <li>**Leave Scenarios Blank**: If you only want to compare one or two scenarios, simply leave the input fields for the unused scenarios empty.</li>
+        <li>**Calculate**: Click the "Calculate CAGR" button to see the annualized return for each scenario and view the comparative growth chart.</li>
+        <li>**Download**: Once calculated, the "Download PDF" button will become active, allowing you to save your results and chart.</li>
+      </ol>
+
+      <div style="text-align:center; margin: 2rem 0;">
+        </div>
+    </main>
+
+    <aside class="ad-sidebar">
+      </aside>
+  </div>
+
+  <footer>
+    &copy; 2025 CalcBed.com - Built with ❤️ for everyday problems.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
     function calculateCAGR() {
       const scenarios = [];
       let anyScenarioValid = false; // Track if at least one valid scenario is entered
-      let allDataValues = []; // To collect all data points for Y-axis scaling
 
       for (let i = 1; i <= 3; i++) {
         const startValueInput = document.getElementById(`scenario${i}-start`).value;
@@ -416,8 +555,7 @@
         const dataPoints = [];
         for (let year = 0; year <= Math.ceil(scenario.periods); year++) {
           const value = scenario.startValue * ((1 + cagr) ** year);
-          dataPoints.push(value); // Push numerical value for min/max calculation
-          allDataValues.push(value); // Collect all data points
+          dataPoints.push(value.toFixed(2));
         }
         datasets.push({
           label: `Scenario ${scenario.index} (CAGR: ${annualizedReturn}%)`,
@@ -437,13 +575,6 @@
         chartLabels.push(`Year ${year}`);
       }
 
-      // Determine min and max for Y-axis scaling
-      const minValue = Math.min(...allDataValues);
-      const maxValue = Math.max(...allDataValues);
-      const padding = (maxValue - minValue) * 0.1; // 10% padding for better visual
-      const suggestedMin = Math.floor(minValue - padding > 0 ? minValue - padding : 0); // Ensure min is not negative
-      const suggestedMax = Math.ceil(maxValue + padding);
-
 
       // Update chart
       const ctx = document.getElementById('cagrChart').getContext('2d');
@@ -458,7 +589,7 @@
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: false, // Crucial for allowing the chart to fill height
           title: {
             display: true,
             text: 'Scenario Growth Over Time'
@@ -480,9 +611,7 @@
                 labelString: 'Value'
               },
               ticks: {
-                beginAtZero: false, // Allow Y-axis to start not at zero
-                suggestedMin: suggestedMin,
-                suggestedMax: suggestedMax,
+                beginAtZero: true,
                 callback: function(value, index, values) {
                   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
                 }
