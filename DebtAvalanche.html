@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Debt Avalanche Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    h1 { text-align: center; }
+    table, th, td { border: 1px solid #ccc; border-collapse: collapse; padding: 5px; }
+    table { width: 100%; margin-bottom: 20px; background: #fff; }
+    input[type="number"], input[type="text"], select { width: 100%; padding: 5px; }
+    .btn { padding: 10px 20px; margin: 10px 0; cursor: pointer; background: #333; color: #fff; border: none; }
+    canvas { background: #fff; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Debt Avalanche Calculator</h1>
+
+  <p>Add your debts (up to 20):</p>
+  <table id="debtTable">
+    <thead>
+      <tr>
+        <th>Creditor</th>
+        <th>Balance (£)</th>
+        <th>Interest Rate (%)</th>
+        <th>Minimum Payment</th>
+        <th>Type (£ or %)</th>
+      </tr>
+    </thead>
+    <tbody id="debtRows">
+      <!-- Rows added dynamically -->
+    </tbody>
+  </table>
+  <button class="btn" onclick="addDebtRow()">Add Debt</button>
+
+  <p><label>Monthly Overpayment Budget (£): <input type="number" id="extraBudget" value="0"/></label></p>
+  <button class="btn" onclick="calculateAvalanche()">Calculate</button>
+  <button class="btn" onclick="exportPDF()">Export to PDF</button>
+
+  <h2>Amortization Chart (Min Payments Only)</h2>
+  <canvas id="baselineChart" width="600" height="300"></canvas>
+
+  <h2>Avalanche Chart</h2>
+  <canvas id="avalancheChart" width="600" height="300"></canvas>
+
+  <h2>Payment Schedule</h2>
+  <div id="paymentSchedule"></div>
+
+  <p><strong>Disclaimer:</strong> This tool is for guidance only and assumes fixed interest with simple compounding. Actual lender policies may differ.</p>
+
+  <script>
+    let debtCount = 0;
+    function addDebtRow() {
+      if (debtCount >= 20) return alert("Limit reached: 20 debts max");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><input type="text" placeholder="Creditor" /></td>
+        <td><input type="number" step="0.01" /></td>
+        <td><input type="number" step="0.01" /></td>
+        <td><input type="number" step="0.01" /></td>
+        <td>
+          <select>
+            <option value="£">£</option>
+            <option value="%">%</option>
+          </select>
+        </td>
+      `;
+      document.getElementById("debtRows").appendChild(row);
+      debtCount++;
+    }
+
+    function getDebts() {
+      const rows = document.querySelectorAll("#debtRows tr");
+      return [...rows].map(row => {
+        const inputs = row.querySelectorAll("input, select");
+        const [creditor, balance, rate, min, type] = [...inputs];
+        const debt = {
+          creditor: creditor.value,
+          balance: parseFloat(balance.value),
+          rate: parseFloat(rate.value),
+          minValue: parseFloat(min.value),
+          minType: type.value,
+        };
+        debt.minPayment = debt.minType === "%" ? (debt.balance * debt.minValue / 100) : debt.minValue;
+        return debt;
+      }).filter(d => d.creditor && d.balance > 0 && d.rate >= 0 && d.minPayment > 0);
+    }
+
+    function calculateAvalanche() {
+      const extra = parseFloat(document.getElementById("extraBudget").value);
+      let debts = getDebts();
+
+      // Total monthly budget
+      const totalBudget = debts.reduce((sum, d) => sum + d.minPayment, 0) + extra;
+
+      // Sort debts: highest rate then largest balance
+      debts.sort((a, b) => b.rate - a.rate || b.balance - a.balance);
+
+      // Clone debts for baseline
+      const baselineDebts = JSON.parse(JSON.stringify(debts));
+
+      // Amortization - Min Only
+      const baselineMonths = baselineDebts.map(d => {
+        let balance = d.balance, months = 0;
+        while (balance > 0 && months < 1000) {
+          const interest = balance * (d.rate / 12 / 100);
+          balance += interest - d.minPayment;
+          balance = Math.max(balance, 0);
+          months++;
+        }
+        return months;
+      });
+      drawChart("baselineChart", baselineDebts.map(d => d.creditor), baselineMonths, "Months to Pay Off (Min Only)");
+
+      // Avalanche Calculation
+      let month = 0, schedule = [];
+      debts.forEach(d => { d.remaining = d.balance; });
+
+      while (debts.some(d => d.remaining > 0) && month < 1000) {
+        let monthRecord = { month: month + 1, payments: {} };
+        let available = totalBudget;
+
+        // Pay minimums
+        debts.forEach(d => {
+          if (d.remaining <= 0) return;
+          const interest = d.remaining * (d.rate / 12 / 100);
+          d.remaining += interest;
+          const pay = Math.min(d.minPayment, d.remaining);
+          d.remaining -= pay;
+          monthRecord.payments[d.creditor] = pay.toFixed(2);
+          available -= pay;
+        });
+
+        // Avalanche logic: apply remaining budget to highest-interest debt
+        for (let d of debts) {
+          if (d.remaining <= 0 || available <= 0) continue;
+          const pay = Math.min(available, d.remaining);
+          d.remaining -= pay;
+          monthRecord.payments[d.creditor] = (+monthRecord.payments[d.creditor] + pay).toFixed(2);
+          available -= pay;
+        }
+
+        schedule.push(monthRecord);
+        month++;
+      }
+
+      drawChart("avalancheChart", debts.map(d => d.creditor), debts.map(d => {
+        return schedule.filter(m => parseFloat(m.payments[d.creditor] || 0) > 0).length;
+      }), "Months to Pay Off (Avalanche)");
+
+      renderSchedule(schedule);
+    }
+
+    function drawChart(id, labels, data, label) {
+      const ctx = document.getElementById(id).getContext('2d');
+      if (window[id]) window[id].destroy();
+      window[id] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label,
+            data,
+            backgroundColor: '#0074d9',
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+          }
+        }
+      });
+    }
+
+    function renderSchedule(schedule) {
+      const div = document.getElementById("paymentSchedule");
+      const creditors = [...new Set(schedule.flatMap(s => Object.keys(s.payments)))];
+      let html = `<table><thead><tr><th>Month</th>${creditors.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>`;
+      schedule.forEach(m => {
+        html += `<tr><td>${m.month}</td>${creditors.map(c => `<td>${m.payments[c] || "-"}</td>`).join("")}</tr>`;
+      });
+      html += "</tbody></table>";
+      div.innerHTML = html;
+    }
+
+    async function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Debt Avalanche Summary", 10, 10);
+      doc.text("Note: This is a simplified overview for personal use.", 10, 16);
+      doc.addPage();
+      doc.text("Payment schedule exported from tool. For visual charts, please screenshot manually.", 10, 10);
+      doc.save("debt-avalanche-summary.pdf");
+    }
+
+    // Initialize with 2 sample rows
+    addDebtRow(); addDebtRow();
+  </script>
+</body>
+</html>
