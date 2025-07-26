@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google ad (gtag.js) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8764257308898767"
+     crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GYTVB75FB1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GYTVB75FB1');
+</script>
+<!-- Google tag (gtag.js) end -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalcBed.com</title>
+  <meta name="description" content="Welcome to CalcBed – explore Personal Finance, DIY, Health, and Engineering tools." />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: #fff;
+      color: #333;
+      line-height: 1.6;
+      padding-top: 60px; /* Adjust this value if your header's height changes */
+    }
+
+    header {
+      background: #f8f9fa;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav h1 a {
+      font-size: 1.5rem;
+      color: #222;
+      text-decoration: none;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      align-items: center;
+      position: relative;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      padding: 0.5rem;
+      display: block;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%; /* Center the dropdown relative to the parent li */
+      transform: translateX(-50%); /* Adjust for half its own width */
+      background: #fff;
+      border: 1px solid #ddd;
+      min-width: 220px;
+      max-width: 90vw; /* Crucial: allows it to shrink on smaller screens */
+      overflow-x: auto; /* Enables horizontal scroll if content still exceeds max-width */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .dropdown-menu li {
+      width: 100%;
+    }
+
+    .dropdown-menu a {
+      padding: 0.6rem 1rem;
+      display: block;
+      text-decoration: none;
+      color: #333;
+      white-space: normal;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .page-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .ad-sidebar {
+      width: 120px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .main-content {
+      max-width: 700px;
+      flex: 1;
+      padding: 0 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    textarea {
+      height: 120px;
+      font-family: monospace;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+
+    #chartContainer {
+      margin-top: 2rem;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    function parseDate(input) {
+      const parts = input.trim().split(/[\/\-]/);
+      if (parts.length !== 3) return null;
+      const [day, month, year] = parts.map(p => parseInt(p));
+      return new Date(year, month - 1, day); // DD/MM/YYYY
+    }
+
+    function formatDateISO(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function calculateCompoundedToDate(lines, interestAnnual, startValue, valuationDate) {
+      let prevDate = null;
+      let compounded = startValue;
+      let cumulative = 0;
+      const interestRateDaily = interestAnnual / 365;
+
+      let tableRows = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        const parts = line.split(/\t|,/);
+        if (parts.length < 2) continue;
+
+        const dateStr = parts[0].trim();
+        const amountStr = parts[1].trim();
+
+        const currentDate = parseDate(dateStr);
+        if (!currentDate || currentDate > valuationDate) {
+          // Skip data beyond valuation date
+          continue;
+        }
+
+        const amount = parseFloat(amountStr);
+        if (isNaN(amount)) continue;
+
+        let daysBetween = 0;
+        if (prevDate) {
+          const diffMs = currentDate - prevDate;
+          daysBetween = Math.round(diffMs / (1000 * 60 * 60 * 24));
+        }
+
+        cumulative += amount;
+
+        if (i === 0 && !prevDate) {
+          compounded = compounded + amount;
+        } else {
+          compounded = compounded * Math.pow(1 + interestRateDaily, daysBetween) + amount;
+        }
+
+        tableRows.push({
+          date: dateStr,
+          amount,
+          days: prevDate ? daysBetween : 0,
+          cumulative,
+          compounded: compounded
+        });
+
+        prevDate = currentDate;
+      }
+
+      // Compound from last date to valuation date if valuation date > last date
+      if (prevDate && prevDate < valuationDate) {
+        const diffMs = valuationDate - prevDate;
+        const daysBetween = Math.round(diffMs / (1000 * 60 * 60 * 24));
+        compounded = compounded * Math.pow(1 + interestRateDaily, daysBetween);
+
+        tableRows.push({
+          date: formatDateISO(valuationDate),
+          amount: 0,
+          days: daysBetween,
+          cumulative,
+          compounded
+        });
+      }
+
+      return tableRows;
+    }
+
+    let chart = null;
+
+    function renderChart(tableRows) {
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      const labels = tableRows.map(row => row.date);
+      const cumulativeData = tableRows.map(row => row.cumulative);
+      const compoundedData = tableRows.map(row => row.compounded);
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Cumulative Deposited Amount',
+              data: cumulativeData,
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.1)',
+              fill: true,
+              tension: 0.3,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+            },
+            {
+              label: 'Total Compounded Amount',
+              data: compoundedData,
+              borderColor: 'green',
+              backgroundColor: 'rgba(0, 128, 0, 0.1)',
+              fill: true,
+              tension: 0.3,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Deposited vs Total Compounded Amount Over Time'
+            }
+          },
+          interaction: {
+            mode: 'nearest',
+            intersect: false
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Amount'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    async function exportPDF() {
+      const { jsPDF } = window.jspdf;
+
+      const doc = new jsPDF('p', 'pt', 'a4');
+      const margin = 20;
+      let y = margin;
+
+      // Title
+      doc.setFontSize(18);
+      doc.text('Investment Calculation Report', margin, y);
+      y += 30;
+
+      // Export table as HTML to canvas
+      const tableElement = document.getElementById('outputTable');
+      if (!tableElement.innerHTML.trim()) {
+        alert('No data to export!');
+        return;
+      }
+
+      // Use html2canvas to render the table
+      const tableCanvas = await html2canvas(tableElement, { scale: 2 });
+      const tableImgData = tableCanvas.toDataURL('image/png');
+      const imgWidth = doc.internal.pageSize.getWidth() - 2 * margin;
+      const imgHeight = (tableCanvas.height * imgWidth) / tableCanvas.width;
+
+      doc.addImage(tableImgData, 'PNG', margin, y, imgWidth, imgHeight);
+      y += imgHeight + 30;
+
+      // Export chart canvas
+      const chartCanvas = document.getElementById('myChart');
+      const chartImgData = chartCanvas.toDataURL('image/png');
+      const chartImgHeight = 200;
+      const chartImgWidth = (chartCanvas.width / chartCanvas.height) * chartImgHeight;
+
+      if (y + chartImgHeight > doc.internal.pageSize.getHeight() - margin) {
+        doc.addPage();
+        y = margin;
+      }
+
+      doc.addImage(chartImgData, 'PNG', margin, y, chartImgWidth, chartImgHeight);
+
+      // Save PDF
+      doc.save('investment_calculation.pdf');
+    }
+
+    function processData() {
+      const raw = document.getElementById("inputData").value.trim();
+      const startValueInput = document.getElementById("startValue").value.trim();
+      const finalValueInput = document.getElementById("finalValue").value.trim();
+      const valuationDateInput = document.getElementById("valuationDate").value.trim();
+
+      if (!raw) {
+        alert("Please paste some data.");
+        return;
+      }
+      if (!valuationDateInput) {
+        alert("Please select a Valuation Date.");
+        return;
+      }
+
+      const startValue = parseFloat(startValueInput);
+      const finalValue = parseFloat(finalValueInput);
+
+      if (isNaN(startValue)) {
+        alert("Please enter a valid Start Value.");
+        return;
+      }
+      if (isNaN(finalValue)) {
+        alert("Please enter a valid Final Value.");
+        return;
+      }
+
+      const valuationDate = new Date(valuationDateInput);
+      if (isNaN(valuationDate)) {
+        alert("Invalid Valuation Date.");
+        return;
+      }
+
+      const lines = raw.split(/\r?\n/);
+
+      // Find earliest date in input data
+      let earliestDate = null;
+      for (const line of lines) {
+        const parts = line.trim().split(/\t|,/);
+        if (parts.length < 2) continue;
+        const d = parseDate(parts[0]);
+        if (d && (!earliestDate || d < earliestDate)) earliestDate = d;
+      }
+      if (!earliestDate) {
+        alert("Could not find valid dates in input data.");
+        return;
+      }
+      if (valuationDate < earliestDate) {
+        alert("Valuation Date cannot be earlier than the earliest data date.");
+        return;
+      }
+
+      // We do a binary search to find the interestAnnual that matches finalValue at valuationDate
+      let low = -0.5;
+      let high = 1.0;
+      let mid = 0;
+      const tolerance = 0.01;
+      const maxIter = 100;
+      let bestRows = [];
+      let bestRate = 0;
+
+      for (let i = 0; i < maxIter; i++) {
+        mid = (low + high) / 2;
+        const rows = calculateCompoundedToDate(lines, mid, startValue, valuationDate);
+        const lastCompounded = rows.length ? rows[rows.length - 1].compounded : startValue;
+
+        if (Math.abs(lastCompounded - finalValue) < tolerance) {
+          bestRows = rows;
+          bestRate = mid;
+          break;
+        }
+
+        if (lastCompounded < finalValue) {
+          low = mid;
+        } else {
+          high = mid;
+        }
+
+        bestRows = rows;
+        bestRate = mid;
+      }
+
+      displayTable(bestRows, startValue, finalValue, bestRate);
+
+      renderChart(bestRows);
+
+      document.getElementById('exportPdfBtn').style.display = 'inline-block';
+    }
+
+    function displayTable(tableRows, startValue, finalValue, interestRate) {
+      if (tableRows.length === 0) {
+        document.getElementById("outputTable").innerHTML = "<p>No valid data found.</p>";
+        return;
+      }
+
+      let html = `<table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Days Between</th>
+            <th>Cumulative Amount</th>
+            <th>With ${(interestRate * 100).toFixed(3)}% Annual Interest</th>
+          </tr>
+        </thead><tbody>`;
+
+      for (let row of tableRows) {
+        html += `<tr>
+          <td>${row.date}</td>
+          <td>${row.amount.toFixed(2)}</td>
+          <td>${row.days}</td>
+          <td>${row.cumulative.toFixed(2)}</td>
+          <td>${row.compounded.toFixed(2)}</td>
+        </tr>`;
+      }
+
+      html += `</tbody></table>`;
+
+      html += `<p><strong>Start Value:</strong> ${startValue.toFixed(2)}</p>`;
+      html += `<p><strong>Final Value:</strong> ${finalValue.toFixed(2)}</p>`;
+      html += `<p><strong>Adjusted Interest Rate:</strong> ${(interestRate * 100).toFixed(4)}%</p>`;
+
+      document.getElementById("outputTable").innerHTML = html;
+    }
+
+    function resetForm() {
+      document.getElementById("startValue").value = "";
+      document.getElementById("finalValue").value = "";
+      document.getElementById("inputData").value = "";
+      document.getElementById("valuationDate").value = "";
+      document.getElementById("outputTable").innerHTML = "";
+      if (chart) {
+        chart.destroy();
+      }
+      document.getElementById('exportPdfBtn').style.display = 'none';
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <h1><a href="https://www.calcbed.com">CalcBed.com</a></h1>
+      <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a href="#">Finance ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="CAGR.html">CAGR</a></li>
+            <li><a href="PIR.html">Personalised Investment Return</a></li>
+            <li><a href="DebtAvalanche.html">Debt Avalanche</a></li>
+            <li><a href="DebtSnowball.html">Debt Snowball</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-container">
+    <aside class="ad-sidebar"></aside>
+
+    <main>
+      <h2>Enter your data</h2>
+
+      <label for="startValue">Start Value:</label>
+      <input type="number" id="startValue" placeholder="Enter starting value" />
+
+      <label for="finalValue">Final Value:</label>
+      <input type="number" id="finalValue" placeholder="Enter final value" />
+
+      <label for="valuationDate">Valuation Date:</label>
+      <input type="date" id="valuationDate" placeholder="Select valuation date" />
+      
+      <p><strong>Format:</strong> DD/MM/YYYY &nbsp;&nbsp;&nbsp; Amount</p>
+      <label for="inputData">Data Input:</label>
+      <textarea id="inputData" placeholder="01/01/2024   72"></textarea>
+
+      <button onclick="processData()">Run</button>
+      <button onclick="resetForm()">Reset</button>
+      <button id="exportPdfBtn" onclick="exportPDF()" style="display:none; margin-left: 1rem;">Export PDF</button>
+
+      <div id="outputTable"></div>
+
+      <div id="chartContainer">
+        <canvas id="myChart"></canvas>
+      </div>
+    </main>
+
+    <aside class="ad-sidebar"></aside>
+  </div>
+
+  <footer>
+  </footer>
+</body>
+</html>
