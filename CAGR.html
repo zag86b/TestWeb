@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8764257308898767"
+      crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GYTVB75FB1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GYTVB75FB1');
+</script>
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalcBed.com</title>
+  <meta name="description" content="Welcome to CalcBed – explore Personal Finance, DIY, Health, and Engineering tools." />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #f8f9fa;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav h1 a {
+      font-size: 1.5rem;
+      color: #222;
+      text-decoration: none;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      align-items: center;
+      position: relative;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      padding: 0.5rem;
+      display: block;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;        /* default alignment */
+      right: auto;    /* reset flipped position */
+      background: #fff;
+      border: 1px solid #ddd;
+      min-width: 220px;
+      max-width: 90vw;
+      overflow-x: auto;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .dropdown-menu li {
+      width: 100%;
+    }
+
+    .dropdown-menu a {
+      padding: 0.6rem 1rem;
+      display: block;
+      text-decoration: none;
+      color: #333;
+      white-space: normal; /* allow wrap */
+      word-wrap: break-word;
+      font-size: 0.95rem;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .page-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .ad-sidebar {
+      width: 120px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .main-content {
+      max-width: 700px;
+      flex: 1;
+      padding: 0 1rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    footer {
+      background: #f1f1f1;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    /* Calculator Specific Styles */
+    .main-content h2, .main-content h3 {
+      color: #333;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .main-content form {
+      background-color: #f8f9fa;
+      padding: 1rem; /* Reduced padding */
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem; /* Reduced margin */
+    }
+
+    .main-content label {
+      display: block;
+      margin-bottom: 0.3rem; /* Reduced margin */
+      font-weight: bold;
+      color: #555;
+      font-size: 0.9rem; /* Slightly smaller font */
+    }
+
+    .main-content .period-input-group {
+        display: flex;
+        gap: 10px; /* Space between year and month inputs */
+        margin-bottom: 0.7rem;
+    }
+
+    .main-content .period-input-group input[type="number"] {
+        flex: 1; /* Allows inputs to grow and share space */
+        width: auto; /* Override specific width for combined input */
+        margin-right: 0; /* Remove right margin */
+    }
+
+    .main-content input[type="number"],
+    .main-content select {
+      width: calc(100% - 10px); /* Adjusting for padding */
+      padding: 0.5rem; /* Reduced padding */
+      margin-bottom: 0.7rem; /* Reduced margin */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem; /* Slightly smaller font */
+      box-sizing: border-box; /* Ensures padding doesn't increase total width */
+    }
+
+
+    .main-content button {
+      background-color: #007bff;
+      color: white;
+      padding: 0.7rem 1.2rem; /* Reduced padding */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem; /* Slightly smaller font */
+      transition: background-color 0.3s ease;
+      margin-top: 0.8rem; /* Reduced margin */
+    }
+
+    .main-content button:hover {
+      background-color: #0056b3;
+    }
+
+    .main-content button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    #results-output {
+      margin-top: 1.5rem; /* Reduced margin */
+      padding: 1.2rem; /* Reduced padding */
+      background-color: #e9ecef;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+
+    #results-output h3 {
+      font-size: 1.1rem; /* Slightly smaller font */
+      color: #333;
+      margin-bottom: 0.4rem; /* Reduced margin */
+    }
+
+    #cagrChart {
+      margin-top: 1.5rem; /* Reduced margin */
+      background-color: #f8f9fa;
+      padding: 0.8rem; /* Reduced padding */
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (max-width: 900px) {
+      .ad-sidebar {
+        display: none;
+      }
+
+      .main-content {
+        max-width: 100%;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #f8f9fa;
+        margin-top: 1rem;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .dropdown-menu {
+        position: static;
+        border: none;
+        box-shadow: none;
+        max-width: 100%;
+        overflow-x: visible;
+      }
+
+      .dropdown:hover .dropdown-menu {
+        display: none;
+      }
+
+      .dropdown.open .dropdown-menu {
+        display: block;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      const dropdowns = document.querySelectorAll('.dropdown');
+
+      toggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+
+      dropdowns.forEach(drop => {
+        drop.addEventListener('click', function (e) {
+          if (window.innerWidth <= 900) {
+            e.stopPropagation();
+            e.preventDefault();
+            drop.classList.toggle('open');
+          }
+        });
+      });
+
+      // Flip dropdown menu if overflowing viewport on desktop hover
+      dropdowns.forEach(drop => {
+        drop.addEventListener('mouseenter', () => {
+          if (window.innerWidth <= 900) return; // skip mobile
+
+          const menu = drop.querySelector('.dropdown-menu');
+          if (!menu) return;
+
+          // Reset position
+          menu.style.left = '0';
+          menu.style.right = 'auto';
+
+          const rect = menu.getBoundingClientRect();
+          const overflowRight = rect.right - window.innerWidth;
+
+          if (overflowRight > 0) {
+            // Flip dropdown to open leftwards
+            menu.style.left = 'auto';
+            menu.style.right = '0';
+          }
+        });
+
+        drop.addEventListener('mouseleave', () => {
+          const menu = drop.querySelector('.dropdown-menu');
+          if (!menu) return;
+          menu.style.left = '0';
+          menu.style.right = 'auto';
+        });
+      });
+    });
+
+    function calculateCAGR() {
+      const scenarios = [];
+      let anyScenarioValid = false; // Track if at least one valid scenario is entered
+      let allDataValues = []; // To collect all data points for Y-axis scaling
+
+      for (let i = 1; i <= 3; i++) {
+        const startValueInput = document.getElementById(`scenario${i}-start`).value;
+        const endValueInput = document.getElementById(`scenario${i}-end`).value;
+        const yearsInput = document.getElementById(`scenario${i}-years`).value;
+        const monthsInput = document.getElementById(`scenario${i}-months`).value;
+
+        // Check if all inputs for this scenario are empty (or effectively zero)
+        if (
+            (startValueInput === '' || parseFloat(startValueInput) === 0) &&
+            (endValueInput === '' || parseFloat(endValueInput) === 0) &&
+            (yearsInput === '' || parseFloat(yearsInput) === 0) &&
+            (monthsInput === '' || parseFloat(monthsInput) === 0)
+        ) {
+            continue; // Skip this scenario if it's blank
+        }
+
+        const startValue = parseFloat(startValueInput);
+        const endValue = parseFloat(endValueInput);
+        const years = parseFloat(yearsInput) || 0;
+        const months = parseFloat(monthsInput) || 0;
+
+        const periods = years + (months / 12); // Convert total months to years
+
+        if (isNaN(startValue) || isNaN(endValue) || isNaN(periods) || periods <= 0 || startValue === 0) {
+            alert(`Please enter valid numbers for Start Value, End Value, and Period for Scenario ${i}. Start Value and total periods must be greater than zero.`);
+            // Clear results and disable download if an invalid scenario is found
+            document.getElementById('results-output').innerHTML = '';
+            if (window.cagrChartInstance) {
+              window.cagrChartInstance.destroy();
+            }
+            document.querySelector('button[onclick="downloadPDF()"]').disabled = true;
+            return;
+        }
+
+        scenarios.push({ startValue, endValue, periods, index: i });
+        anyScenarioValid = true;
+      }
+
+      const resultsDiv = document.getElementById('results-output');
+      resultsDiv.innerHTML = '';
+
+      if (!anyScenarioValid) {
+          resultsDiv.innerHTML = '<p>Please enter data for at least one scenario to calculate CAGR.</p>';
+          if (window.cagrChartInstance) {
+            window.cagrChartInstance.destroy();
+          }
+          document.querySelector('button[onclick="downloadPDF()"]').disabled = true;
+          return;
+      }
+
+      let maxPeriods = 0; // To determine the x-axis range for the chart
+
+      const colors = ['#007bff', '#28a745', '#ffc107']; // Bootstrap primary, success, warning colors
+      const datasets = [];
+
+      scenarios.forEach((scenario, arrayIndex) => { // Use arrayIndex for colors
+        const cagr = ((scenario.endValue / scenario.startValue) ** (1 / scenario.periods)) - 1;
+        const annualizedReturn = (cagr * 100).toFixed(2);
+        resultsDiv.innerHTML += `<h3>Scenario ${scenario.index} Annualized Return: ${annualizedReturn}%</h3>`;
+
+        // Prepare data for the chart
+        const dataPoints = [];
+        for (let year = 0; year <= Math.ceil(scenario.periods); year++) {
+          const value = scenario.startValue * ((1 + cagr) ** year);
+          dataPoints.push(value); // Push numerical value for min/max calculation
+          allDataValues.push(value); // Collect all data points
+        }
+        datasets.push({
+          label: `Scenario ${scenario.index} (CAGR: ${annualizedReturn}%)`,
+          data: dataPoints,
+          borderColor: colors[arrayIndex % colors.length], // Cycle through colors
+          fill: false,
+          tension: 0.1 // For a slightly curved line
+        });
+
+        if (scenario.periods > maxPeriods) {
+          maxPeriods = scenario.periods;
+        }
+      });
+
+      const chartLabels = [];
+      for (let year = 0; year <= Math.ceil(maxPeriods); year++) {
+        chartLabels.push(`Year ${year}`);
+      }
+
+      // Determine min and max for Y-axis scaling
+      const minValue = Math.min(...allDataValues);
+      const maxValue = Math.max(...allDataValues);
+      const padding = (maxValue - minValue) * 0.1; // 10% padding for better visual
+      const suggestedMin = Math.floor(minValue - padding > 0 ? minValue - padding : 0); // Ensure min is not negative
+      const suggestedMax = Math.ceil(maxValue + padding);
+
+
+      // Update chart
+      const ctx = document.getElementById('cagrChart').getContext('2d');
+      if (window.cagrChartInstance) {
+        window.cagrChartInstance.destroy(); // Destroy previous chart instance
+      }
+      window.cagrChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartLabels,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          title: {
+            display: true,
+            text: 'Scenario Growth Over Time'
+          },
+          scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Years'
+              },
+              ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 10 // Adjust based on desired density
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Value'
+              },
+              ticks: {
+                beginAtZero: false, // Allow Y-axis to start not at zero
+                suggestedMin: suggestedMin,
+                suggestedMax: suggestedMax,
+                callback: function(value, index, values) {
+                  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+                }
+              }
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(tooltipItem.yLabel);
+                return label;
+              }
+            }
+          }
+        }
+      });
+
+      document.querySelector('button[onclick="downloadPDF()"]').disabled = false;
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(22);
+      doc.text("CAGR Calculator Results", 10, 20);
+
+      doc.setFontSize(12);
+      const resultsDiv = document.getElementById('results-output');
+      const resultsText = resultsDiv.innerText;
+
+      // Split text to fit within page width
+      const textLines = doc.splitTextToSize(resultsText, doc.internal.pageSize.getWidth() - 20);
+      doc.text(textLines, 10, 40);
+
+      // Add chart to PDF
+      const canvas = document.getElementById('cagrChart');
+      const imgData = canvas.toDataURL('image/png');
+      const imgProps= doc.getImageProperties(imgData);
+      const pdfWidth = doc.internal.pageSize.getWidth() - 20; // 10 units padding on each side
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      // Position image after text, with some margin
+      const textHeight = (textLines.length * doc.getLineHeight()) / doc.internal.scaleFactor;
+      doc.addImage(imgData, 'PNG', 10, 40 + textHeight + 10, pdfWidth, pdfHeight);
+
+      doc.save("CAGR_Results.pdf");
+    }
+  </script>
+</body>
+</html>
