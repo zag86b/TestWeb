@@ -233,13 +233,11 @@
         navLinks.classList.toggle('active');
       });
 
-dropdowns.forEach(drop => {
-        drop.addEventListener('click', function (e) { // <-- Attaching listener to the <li>.dropdown itself
-          if (window.innerWidth <= 900) {
-      // Only toggle when the dropdown title (parent link) is clicked
-      if (e.target.closest('.dropdown > a')) {
-        e.preventDefault();
-        drop.classList.toggle('open');
+drop.addEventListener('click', function (e) {
+  if (window.innerWidth <= 900) {
+    e.stopPropagation();  // Stops clicks from propagating
+    e.preventDefault();   // Prevents the default link navigation
+    drop.classList.toggle('open');
           }
         });
       });
