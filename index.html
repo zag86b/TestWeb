@@ -234,31 +234,13 @@
       });
 
 dropdowns.forEach(drop => {
-        // Find the specific dropdown toggle link (e.g., "Finance ▾") within the current dropdown item
-        const dropdownToggleLink = drop.querySelector('a[href="#"]'); // Selects the 'a' tag with href="#"
-
-        if (dropdownToggleLink) { // Ensure the link exists before adding a listener
-          dropdownToggleLink.addEventListener('click', function (e) {
-            if (window.innerWidth <= 900) {
-              e.preventDefault(); // Only prevent default for this toggle link
-              e.stopPropagation(); // Only stop propagation for this toggle link
-              drop.classList.toggle('open'); // Toggle 'open' class on the parent <li>
-            }
-          });
-        }
-
-        // Optional: Add an event listener to close the dropdown if a link inside it is clicked
-        const dropdownMenu = drop.querySelector('.dropdown-menu');
-        if (dropdownMenu) {
-            dropdownMenu.addEventListener('click', function(e) {
-                // If the clicked element is an 'A' tag and we are on mobile
-                if (e.target.tagName === 'A' && window.innerWidth <= 900) {
-                    drop.classList.remove('open'); // Close the specific dropdown
-                    // If you also want to close the main hamburger menu after selection, uncomment the next line:
-                    // navLinks.classList.remove('active');
-                }
-            });
-        }
+        drop.addEventListener('click', function (e) { // <-- Attaching listener to the <li>.dropdown itself
+          if (window.innerWidth <= 900) {
+            e.stopPropagation(); // This was stopping clicks on child links
+            e.preventDefault();  // This was preventing default behavior for child links too
+            drop.classList.toggle('open');
+          }
+        });
       });
 
       // Flip dropdown menu if overflowing viewport on desktop hover
