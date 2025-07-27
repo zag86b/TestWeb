@@ -236,9 +236,10 @@
 dropdowns.forEach(drop => {
         drop.addEventListener('click', function (e) { // <-- Attaching listener to the <li>.dropdown itself
           if (window.innerWidth <= 900) {
-            e.stopPropagation(); // This was stopping clicks on child links
-            e.preventDefault();  // This was preventing default behavior for child links too
-            drop.classList.toggle('open');
+      // Only toggle when the dropdown title (parent link) is clicked
+      if (e.target.closest('.dropdown > a')) {
+        e.preventDefault();
+        drop.classList.toggle('open');
           }
         });
       });
